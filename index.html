@@ -112,7 +112,7 @@ let aba='best',cat='Todas',ord='rel',faixa='',soDesc=false,soL3=false;
 const FAIXAS=[['','Qualquer preço'],['0-50','Até R$ 50'],['50-100','R$ 50 a 100'],['100-150','R$ 100 a 150'],['150-200','R$ 150 a 200'],['200-250','R$ 200 a 250'],['250-300','R$ 250 a 300'],['300-','Acima de R$ 300']];
 function faixaOk(p){if(!faixa)return true;const[a,b]=faixa.split('-');const lo=+a,hi=b===''?Infinity:+b;return (lo===0||p>lo)&&p<=hi}
 function num(){try{return(WA_LOJA||localStorage.getItem('wa')||'').replace(/\D/g,'')}catch(e){return WA_LOJA}}
-let vista='desc';
+let vista='cat';
 const dpc=x=>x.p>0?(x.p-pv(x))/x.p:0;
 const catOrd=(a,b)=>a==='Outros'?1:b==='Outros'?-1:a.localeCompare(b,'pt-BR');
 function baseV(){const A=D[aba];return vista==='desc'?A.filter(x=>pv(x)<x.p):vista==='l3'?A.filter(x=>x.l3):A}
