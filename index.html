@@ -137,7 +137,7 @@ function toast(t){const e=document.createElement('div');e.className='toast';e.te
 function pv(x){if(aba!=='enc')return x.p;if(x.l3)return x.p;if(+x.pf>0)return +x.pf;if(+x.qp>0&&(x.d===undefined||x.d===null||x.d===''))return x.p;const d=(x.d===undefined||x.d===null||x.d==='')?DESC_QUEIMA*100:+x.d;return Math.ceil(x.p*(100-d)/100-1e-9)}
 function msgItem(x){return 'Olá! Quero saber do produto: '+nm(x)+' (cód. '+x.id+'), '+brl(pv(x))+'. Ainda tem?'}
 function waLink(msg){const n=num();return n?'https://wa.me/55'+n.replace(/^55/,'')+'?text='+encodeURIComponent(msg):'#'}
-const SITE='https://catalogo.gazoli-ana.workers.dev/';/* endereço do catálogo que vai nas mensagens compartilhadas; trocar quando mudar de endereço */
+const SITE='https://catalogo.redepresentes.workers.dev/';/* endereço do catálogo que vai nas mensagens compartilhadas; trocar quando mudar de endereço */
 function shareLink(msg){return 'https://wa.me/?text='+encodeURIComponent(msg)}
 function msgShare(x){const v=pv(x);return 'Olha o que achei na Rede Presentes 💝\n'+nm(x)+'\n'+(aba==='enc'&&v<x.p?'De '+brl(x.p)+' por '+brl(v):brl(v))+(x.l3?' (Leve 3 pague 2)':'')+'\nVeja aqui: '+SITE+'#p='+x.id+' (cód. '+x.id+')'}
 function pedir(x){const msg=msgItem(x);const n=num();
