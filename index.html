@@ -72,6 +72,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
  <div class="tabs" role="group" aria-label="Seção"><button class="tab" id="t-dq" aria-pressed="true">Destaques</button><button class="tab" id="t-best" aria-pressed="false">Mais vendidos</button><button class="tab" id="t-enc" aria-pressed="false">Black Friday</button><button class="tab" id="t-mm" aria-pressed="false">Compre mais por menos</button><button class="tab" id="t-op" aria-pressed="false">Oportunidades</button></div>
  <div class="note" id="nota"></div>
  <div class="row"><input type="search" id="q" placeholder="Buscar por nome ou código" aria-label="Buscar por nome ou código"></div>
+ <button type="button" id="lq" hidden style="margin:0;align-self:flex-start;font:inherit;font-size:17px;font-weight:700;padding:12px 18px;min-height:48px;border-radius:12px;border:2px solid var(--accent);background:var(--tile);color:var(--fg);cursor:pointer">✕ Limpar a busca e ver tudo</button>
  <a class="shc" id="shbusca" target="_blank" rel="noopener" hidden style="margin-top:0;align-self:flex-start">💬 Compartilhar esta busca</a>
  <div class="seg" id="seg" role="group" aria-label="Como ver os produtos"></div>
  <div class="ctl"><button class="chip catbtn" id="catbtn">📂 Categorias</button><select id="fx" class="ord" aria-label="Faixa de preço"></select><button class="chip" id="limp" hidden>Limpar</button></div>
@@ -144,7 +145,7 @@ function pedir(x){const msg=msgItem(x);const n=num();
  if(n){window.open('https://wa.me/55'+n.replace(/^55/,'')+'?text='+encodeURIComponent(msg),'_blank')}
  else{try{navigator.clipboard.writeText(msg).then(()=>toast('Mensagem copiada. Cole no WhatsApp da loja.'),()=>toast('Defina o WhatsApp da loja abaixo.'))}catch(e){toast('Defina o WhatsApp da loja abaixo.')}}}
 function shBusca(L){const q=$('q').value.trim(),b=$('shbusca');b.hidden=!q||!L.length;if(b.hidden)return;const t=L.slice(0,5).map(x=>'• '+nm(x)+' — '+brl(pv(x))).join('\n');b.href=shareLink('Olha o que achei na Rede Presentes 💝\nBusca: "'+q+'" ('+L.length+(L.length===1?' produto':' produtos')+')\n'+t+(L.length>5?'\ne mais '+(L.length-5)+'...':'')+'\nVeja tudo aqui: '+SITE+'#b='+encodeURIComponent(q))}
-function render(){ctl();const L=list();shBusca(L);const g=$('g');g.innerHTML='';
+function render(){ctl();$('lq').hidden=!$('q').value.trim();const L=list();shBusca(L);const g=$('g');g.innerHTML='';
  {const nt=aba==='enc'?(vista==='l3'&&!$('q').value.trim()?'<b>Leve 3 produtos e pague só 2!</b><br>Escolha 3 produtos desta lista. Pode ser de tipos diferentes.<br>O de <b>menor preço</b> sai de graça.<br><span class="ex">Exemplo: 3 produtos de R$ 20, R$ 30 e R$ 40. Você paga só R$ 70, porque o de R$ 20 não é cobrado.</span>':''):'';$('nota').hidden=aba==='enc'&&!nt;if(aba==='enc')$('nota').innerHTML=nt}if(aba!=='enc')$('nota').textContent=aba==='dq'?'Escolhidos pela loja para você.':aba==='op'?'Novidades e kits da loja. Peça pelo WhatsApp.':aba==='best'?'Os produtos que mais saem.':aba==='mm'?'Quanto mais você leva, menos paga em cada peça. O preço menor vale a partir da quantidade indicada em cada produto.':'';
  if(!L.length){g.innerHTML='<div class="empty">Nenhum produto encontrado.</div>';return}
  const mk=x=>{const c=document.createElement('article');c.className='card';
@@ -154,7 +155,7 @@ function render(){ctl();const L=list();shBusca(L);const g=$('g');g.innerHTML='';
  if(vista==='cat'&&!$('q').value.trim()){let cur=null;L.forEach(x=>{if(x.c!==cur){cur=x.c;const hh=document.createElement('h3');hh.className='gh';hh.textContent=cur;const n=L.filter(z=>z.c===cur).length;const sp=document.createElement('span');sp.textContent=' · '+n+(n===1?' produto':' produtos');hh.appendChild(sp);g.appendChild(hh)}g.appendChild(mk(x))})}
  else L.forEach(x=>g.appendChild(mk(x)))}
 function aba_(a){aba=a;cat='Todas';$('t-dq').setAttribute('aria-pressed',a==='dq');$('t-best').setAttribute('aria-pressed',a==='best');$('t-enc').setAttribute('aria-pressed',a==='enc');$('t-op').setAttribute('aria-pressed',a==='op');$('t-mm').setAttribute('aria-pressed',a==='mm');render()}
-$('t-dq').onclick=()=>aba_('dq');$('t-best').onclick=()=>aba_('best');$('t-enc').onclick=()=>aba_('enc');$('t-op').onclick=()=>aba_('op');$('t-mm').onclick=()=>aba_('mm');$('q').oninput=render;
+$('t-dq').onclick=()=>aba_('dq');$('t-best').onclick=()=>aba_('best');$('t-enc').onclick=()=>aba_('enc');$('t-op').onclick=()=>aba_('op');$('t-mm').onclick=()=>aba_('mm');$('q').oninput=render;$('lq').onclick=()=>{$('q').value='';render();window.scrollTo({top:0,behavior:'smooth'})};
 {const m=location.hash.match(/^#(?:p|b)=([^&]+)/);if(m){try{$('q').value=decodeURIComponent(m[1])}catch(e){}}}
 $('shcat').href=shareLink('Oi! Estou compartilhando o catálogo de ofertas da Rede Presentes 💝 Dá uma olhada: '+SITE);
 const VIS=['dq','best','enc','mm','op'].filter(k=>(D[k]||[]).length);['dq','best','enc','mm','op'].forEach(k=>{$('t-'+k).hidden=!VIS.includes(k)});if(VIS.length<2)document.querySelector('.tabs').hidden=true;if(VIS.length)aba_(VIS[0]);
